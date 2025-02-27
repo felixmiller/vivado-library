@@ -89,6 +89,10 @@ entity dvi2rgb is
       vid_pVDE : out std_logic;
       vid_pHSync : out std_logic;
       vid_pVSync : out std_logic;
+      vid_pCTL0 : out std_logic;
+      vid_pCTL1 : out std_logic;
+      vid_pCTL2 : out std_logic;
+      vid_pCTL3 : out std_logic;
       
       PixelClk : out std_logic; --pixel-clock recovered from the DVI interface
       
@@ -166,6 +170,8 @@ signal dbg_pAlignErr, dbg_pBitslip : std_logic_vector(2 downto 0);
 signal dbg_pEyeSize : eyeSize_t;
 
 signal pTrigOut, pTrigOutAck, rTrigOutAck, rTrigOut : std_logic;
+
+signal pCTL0, pCTL1, pCTL2, pCTL3 : std_logic;
 
 begin
 
@@ -264,6 +270,10 @@ pData(7 downto 0) <= pDataIn(1); -- green is channel 1
 pData(15 downto 8) <= pDataIn(0); -- blue is channel 0
 pHSync <= pC0(0); -- channel 0 carries control signals too
 pVSync <= pC1(0); -- channel 0 carries control signals too
+pCTL0 <= pc0(1);
+pCTL1 <= pc1(1);
+pCTL2 <= pc0(2);
+pCTL3 <= pc1(2);
 pVDE <= pDE(0); -- since channels are aligned, all of them are either active or blanking at once
 
 -- Clock outputs
@@ -282,12 +292,20 @@ GenerateBUFG: if kAddBUFG generate
          piVDE => pVDE,
          piHSync => pHSync,
          piVSync => pVSync,
+         piCTL0 => pCTL0,
+         piCTL1 => pCTL1,
+         piCTL2 => pCTL2,
+         piCTL3 => pCTL3,
          PixelClkIn => PixelClk_int,
          -- Video out
          poData => vid_pData,
          poVDE => vid_pVDE,
          poHSync => vid_pHSync,
          poVSync => vid_pVSync,
+         poCTL0 => vid_pCTL0,
+         poCTL1 => vid_pCTL1,
+         poCTL2 => vid_pCTL2,
+         poCTL3 => vid_pCTL3,
          PixelClkOut => PixelClk
       );
 end generate GenerateBUFG;
@@ -297,6 +315,10 @@ DontGenerateBUFG: if not kAddBUFG generate
    vid_pVDE <= pVDE;
    vid_pHSync <= pHSync;
    vid_pVSync <= pVSync;
+   vid_pCTL0 <= pCTL0;
+   vid_pCTL1 <= pCTL1;
+   vid_pCTL2 <= pCTL2;
+   vid_pCTL3 <= pCTL3;
    PixelClk <= PixelClk_int;
 end generate DontGenerateBUFG;
                  

@@ -65,12 +65,20 @@ entity ResyncToBUFG is
       piVDE : in std_logic;
       piHSync : in std_logic;
       piVSync : in std_logic;
+      piCTL0 : in std_logic;
+      piCTL1 : in std_logic;
+      piCTL2 : in std_logic;
+      piCTL3 : in std_logic;
       PixelClkIn : in std_logic;
       -- Video out
       poData : out std_logic_vector(23 downto 0);
       poVDE : out std_logic;
       poHSync : out std_logic;
       poVSync : out std_logic;
+      poCTL0 : out std_logic;
+      poCTL1 : out std_logic;
+      poCTL2 : out std_logic;
+      poCTL3 : out std_logic;
       PixelClkOut : out std_logic
    );
 end ResyncToBUFG;
@@ -95,7 +103,11 @@ begin
       poData <= piData;
       poVDE <= piVDE;
       poHSync <= piHSync;
-      poVSync <= piVSync; 
+      poVSync <= piVSync;
+      poCTL0 <= piCTL0;
+      poCTL1 <= piCTL1;
+      poCTL2 <= piCTL2;
+      poCTL3 <= piCTL3;
    end if;
 end process RegisterData;
 
